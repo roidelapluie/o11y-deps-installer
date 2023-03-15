@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.20.x
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set version
+      run: |
+        echo "Updating VERSION file..."
+        echo "${GITHUB_REF#refs/tags/v}" > VERSION
+
+    - name: Build
+      run: |
+        make download_packer
+        make build_packer_image
+        make build
+
+    - name: Create release archive
+      run: |
+        mkdir release
+        cp o11y-deps-installer release/
+        tar czf o11y-deps-installer.tar.gz -C release/ .
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: o11y-deps-installer.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
