@@ -365,6 +365,9 @@ func handleUninstallReinstall(depsHome string) (bool, error) {
 		}
 	} else {
 		files, err := ioutil.ReadDir(depsHome)
+		if os.IsNotExist(err) {
+			return false, nil
+		}
 		if err != nil {
 			return false, fmt.Errorf("Error checking destination directory: %v", err)
 		}

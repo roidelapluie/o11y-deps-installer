@@ -5,7 +5,7 @@ PACKER_URL := https://releases.hashicorp.com/packer/$(PACKER_VERSION)/packer_$(P
 
 build:
 	@echo "Building Go project..."
-	go build
+	CGO_ENABLED=0 go build -ldflags '-extldflags "-static"'
 	@echo "Go project built successfully."
 
 packer: download_packer build_packer_image build_ansible_alpine_tar
