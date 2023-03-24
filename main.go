@@ -319,7 +319,7 @@ func createWrapperScripts(depsHome string) error {
 	wrapperDir := filepath.Join(depsHome, "bin")
 
 	for _, file := range files {
-		if strings.HasPrefix(file.Name(), "ansible") {
+		if strings.HasPrefix(file.Name(), "ansible") || strings.HasPrefix(file.Name(), "ara") {
 			wrapperPath := filepath.Join(wrapperDir, file.Name())
 			wrapperContent := fmt.Sprintf("#!/bin/sh\nLD_LIBRARY_PATH=%s/lib/:%s/usr/lib/ exec %s/opt/ansible-venv/bin/%s \"$@\"\n",
 				depsHome, depsHome, depsHome,
