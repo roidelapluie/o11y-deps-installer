@@ -263,6 +263,8 @@ func fixBinariesAndLibraries(patchelfPath, dir string) error {
 		filepath.Join(dir, "usr", "bin"),
 		//		filepath.Join(dir, "lib"),
 	}
+	libDir := filepath.Join(dir, "lib")
+	usrLibDir := filepath.Join(dir, "usr", "lib")
 
 	dynamicLinker := filepath.Join(dir, "lib", "ld-musl-x86_64.so.1")
 
@@ -290,7 +292,7 @@ func fixBinariesAndLibraries(patchelfPath, dir string) error {
 
 			if strings.Contains(string(output), "ELF") {
 				// Fix the binary or library using patchelf
-				cmd := exec.Command(patchelfPath, "--set-interpreter", dynamicLinker, path)
+				cmd := exec.Command(patchelfPath, "--set-interpreter", dynamicLinker, "--set-rpath", strings.Join([]string{usrLibDir, libDir}, ":"), path)
 				err := cmd.Run()
 				if err != nil {
 					return fmt.Errorf("error running patchelf on %q: %v", path, err)
@@ -319,10 +321,11 @@ func createWrapperScripts(depsHome string) error {
 	wrapperDir := filepath.Join(depsHome, "bin")
 
 	for _, file := range files {
-		if strings.HasPrefix(file.Name(), "ansible") || strings.HasPrefix(file.Name(), "ara") {
+		if strings.HasPrefix(file.Name(), "ansible") || strings.HasPrefix(file.Name(), "ara") || file.Name() == "python3" {
 			wrapperPath := filepath.Join(wrapperDir, file.Name())
-			wrapperContent := fmt.Sprintf("#!/bin/sh\nLD_LIBRARY_PATH=%s/lib/:%s/usr/lib/ exec %s/opt/ansible-venv/bin/%s \"$@\"\n",
-				depsHome, depsHome, depsHome,
+			//			wrapperContent := fmt.Sprintf("#!/bin/sh\nLD_LIBRARY_PATH=%s/lib/:%s/usr/lib/ exec %s/opt/ansible-venv/bin/%s \"$@\"\n",
+			wrapperContent := fmt.Sprintf("#!/bin/sh\nexec %s/opt/ansible-venv/bin/%s \"$@\"\n",
+				depsHome,
 				file.Name())
 
 			err := ioutil.WriteFile(wrapperPath, []byte(wrapperContent), 0755)
