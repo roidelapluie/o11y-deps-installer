@@ -16,7 +16,7 @@
       "type": "shell",
       "inline": [
         "apk update",
-        "apk add --no-cache python3 py3-pip patchelf curl gcc musl-dev python3-dev",
+        "apk add --no-cache python3 py3-pip patchelf curl gcc musl-dev python3-dev libedit",
         "python3 -m venv /opt/ansible-venv",
         "source /opt/ansible-venv/bin/activate",
         "pip install --no-cache-dir --upgrade pip",
