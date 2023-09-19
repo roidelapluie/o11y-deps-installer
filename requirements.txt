@@ -28,7 +28,7 @@ pycparser==2.21
 Pygments==2.15.1
 pyperclip==1.8.2
 pytz==2023.3
-PyYAML==6.0
+PyYAML==6.0.1
 requests==2.31.0
 resolvelib==1.0.1
 ruamel.yaml==0.17.32
