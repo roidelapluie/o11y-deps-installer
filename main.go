@@ -24,6 +24,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"unicode"
 
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/cheggaaa/pb/v3"
@@ -51,6 +52,11 @@ func main() {
 
 	if absDepsHome == "/" {
 		fmt.Println("Error: The provided path is forbidden")
+		os.Exit(1)
+	}
+
+	if detectWhitespace(absDepsHome) {
+		fmt.Println("Error: The provided path is forbidden (contains spaces)")
 		os.Exit(1)
 	}
 
@@ -395,4 +401,13 @@ func writeVersionFile(dest string) error {
 		return fmt.Errorf("Error writing O11YDEPSVERSION file: %v", err)
 	}
 	return nil
+}
+
+func detectWhitespace(s string) bool {
+	for _, runeValue := range s {
+		if unicode.IsSpace(runeValue) {
+			return true
+		}
+	}
+	return false
 }
