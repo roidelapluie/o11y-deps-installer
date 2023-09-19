@@ -324,8 +324,8 @@ func createWrapperScripts(depsHome string) error {
 		if strings.HasPrefix(file.Name(), "ansible") || strings.HasPrefix(file.Name(), "ara") || file.Name() == "python3" {
 			wrapperPath := filepath.Join(wrapperDir, file.Name())
 			//			wrapperContent := fmt.Sprintf("#!/bin/sh\nLD_LIBRARY_PATH=%s/lib/:%s/usr/lib/ exec %s/opt/ansible-venv/bin/%s \"$@\"\n",
-			wrapperContent := fmt.Sprintf("#!/bin/sh\nexport PYTHONPATH=%s\nexec %s/opt/ansible-venv/bin/%s \"$@\"\n",
-				filepath.Join(depsHome, "usr", "lib", "python3.11")+":"+filepath.Join(depsHome, "usr", "lib", "python3.11", "lib-dynload"),
+			wrapperContent := fmt.Sprintf("#!/bin/sh\nexport PYTHONHOME=%s\nPYTHONPATH=%s\nexec %s/opt/ansible-venv/bin/%s \"$@\"\n",
+				depsHome, filepath.Join(depsHome, "usr", "lib", "python3.11")+":"+filepath.Join(depsHome, "usr", "lib", "python3.11", "lib-dynload"),
 				depsHome,
 				file.Name())
 
