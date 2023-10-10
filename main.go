@@ -375,7 +375,7 @@ func handleUninstallReinstall(depsHome string) (bool, error) {
 			}
 
 			if len(files) > 0 {
-				return false, fmt.Errorf("Destination directory exists and is not empty. VERSION: %s. Aborting.", existingVersion)
+				return false, fmt.Errorf("Destination directory exists and is not empty. The version installed is %s. Aborting.", existingVersion)
 			}
 		}
 	} else {
