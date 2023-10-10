@@ -45,7 +45,7 @@ func main() {
 	kingpin.Version(strings.TrimSpace(versionContent))
 	kingpin.Parse()
 
-	fmt.Printf("Installing O11y dependencies (%s\n).", strings.TrimSpace(versionContent))
+	fmt.Printf("Installing O11y dependencies (%s).\n", strings.TrimSpace(versionContent))
 
 	absDepsHome, err := filepath.Abs(*depsHome)
 	if err != nil {
