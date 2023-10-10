@@ -42,7 +42,10 @@ var (
 )
 
 func main() {
+	kingpin.Version(strings.TrimSpace(versionContent))
 	kingpin.Parse()
+
+	fmt.Printf("Installing O11y dependencies (%s\n).", strings.TrimSpace(versionContent))
 
 	absDepsHome, err := filepath.Abs(*depsHome)
 	if err != nil {
@@ -51,12 +54,12 @@ func main() {
 	}
 
 	if absDepsHome == "/" {
-		fmt.Println("Error: The provided path is forbidden")
+		fmt.Println("Error: The provided path is forbidden.")
 		os.Exit(1)
 	}
 
 	if detectWhitespace(absDepsHome) {
-		fmt.Println("Error: The provided path is forbidden (contains spaces)")
+		fmt.Println("Error: The provided path is forbidden (contains spaces).")
 		os.Exit(1)
 	}
 
