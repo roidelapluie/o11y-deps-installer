@@ -28,7 +28,7 @@ make build
 
 ## Usage
 
-To install the dependencies, simply run the generated `o11y-deps-installer` binary:
+To install the dependencies, simply run the generated `o11y-deps-installer` binary as a user that has write permissions on /opt/o11y:
 
 ```sh
 ./o11y-deps-installer
