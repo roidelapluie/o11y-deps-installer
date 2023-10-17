@@ -14,7 +14,8 @@ executable.
 
 ## Prerequisites
 
-Go 1.20 or higher
+- Go 1.20 or higher
+- You need at least 1Gb of memory to run this installer
 
 ## Building
 
